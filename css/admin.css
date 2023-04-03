@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Comic Sans MS';
+    src: url("comic-sans-ms/COMIC.TTF");
+  }
+table {
+    border-collapse: collapse;
+    width: 75%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.dash{
+    align-items: left;
+    /* min-width: 300px;
+    min-height: 100%; */
+    height: 100vh;
+    width: 20%;
+    float: left;
+    background-color: #2C3E50;
+    border-radius: 20px; 
+    transition-duration: 0.4s;
+    min-width: 150px;
+}
+.dashText{
+    padding: 15px;
+    margin: auto;
+    color: #E74C3C;
+}
+.dashBtn{
+    width: 100%;
+    border-width: 0px;
+    transition-duration: 0.4s;
+    border-radius: 5px;
+    background-color: #2C3E50;
+    height: 45px;
+    list-style: none;
+    display: block;
+    margin: auto;
+    color: #E74C3C;
+}
+.dashBtn:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+.html, .body{
+    background-color: #2C3E50;
+}
+
+@media screen and (max-width: 600px) {
+    .dash{
+        width: 100%;
+        height: auto;
+        min-width: none;
+    }
+    .sales{
+        width: 100%;
+    }
+    .table{
+        width: 100%;
+        overflow: auto;
+    }
+}

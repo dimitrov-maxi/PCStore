@@ -1,0 +1,332 @@
+@font-face {
+    font-family: 'Comic Sans MS';
+    src: url("comic-sans-ms/COMIC.TTF");
+}
+.buyBttn{
+    height: 50px;
+    width: 100px;
+    border-radius: 5px;
+    background-color: #2C3E50;
+    float: right;
+    margin: 10px;
+}
+.navigation{
+    flex: auto;
+    border-radius: 6px;
+    margin-top: 12px;
+    background-color: #E74C3C;
+    height: 60px;
+    margin:auto;
+}
+.displayProducts{
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.preview{
+    background-color: #ddd ;
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 15px;
+}
+.pictureGallery{
+    margin: auto;
+}
+
+.previewPic{
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.shop{
+    background-color: aqua;
+}
+
+
+.contain{
+    align-items: center;
+    max-width: 370px;
+    width: auto;
+    min-height: 240px;
+    height: auto;
+    float: left;
+    background-color: #E74C3C;
+    margin: 30px;
+    border-radius: 20px;
+    transition-duration: 0.4s;
+}
+
+.contain:hover{
+    background-color: #3498db;
+}
+
+.logo{
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    /* auto  */
+}
+
+.search{
+    margin-top: 10px;
+    width: 100px;
+    max-width: 400px;
+    height: auto;
+}
+
+.search_img{
+    width: 100%;
+    max-width: 40px;
+    height: 40px;
+
+}
+
+/*CART & LOGIN*/
+.loginbtn{
+    width: 100%;
+    max-width:70px;
+    text-decoration: none;
+    color: black;
+
+}
+
+.loginbtn:hover{
+    color:white;
+}
+
+.cartbtn{
+    border-radius: 10px;
+    background-color: #E74C3C;
+    transition-duration: 0.4s;
+    margin-top: 2px;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+
+}
+
+.cartbtn:hover{
+    background-color: #2C3E50;
+    color: white;
+}
+
+.gallery{
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    z-index:1;
+
+}
+/* Dropdown Button */
+.dropBtnTxt {
+    border-radius: 10px;
+    background-color: #E74C3C;
+    transition-duration: 0.4s;
+    margin-top: 2px;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.dropbtn:hover{
+    background-color: #2C3E50;
+    color: white;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index:2;
+}
+/* Dropdown Content  */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #E74C3C;
+    min-width: 160px;
+    box-shadow: #2C3E50;
+    z-index: 2;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    z-index:2;
+}
+
+.dropdown-content a:hover {
+    background-color: #2C3E50;
+    color: white;
+    z-index:2;}
+
+.show {display:block;}
+
+/* ------------------------------------------------------------ */
+
+.switch {
+    position: static;
+    padding: 13px;
+    float: right;
+}
+    
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+/* The switch - the box around the slider */
+
+  
+  /* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+} 
+  /* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #E74C3C;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #2C3E50;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+input:checked + .slider {
+    background-color: #E74C3C;
+}
+  
+  
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+  
+  /* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+  
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* ---------------------------- */
+
+html, .theme{
+    background-color: var(--bg-color);
+    font-family: Comic Sans MS;
+}
+
+ :root {
+
+    --font-color: #fefefe;  
+    --bg-color: #2C3E50;
+    
+
+}
+
+[data-theme="light"] {
+    --font-color: #2C3E50;
+    --bg-color: #fefefe;
+}
+/*                                */
+.menuBtn{
+    height:50px;
+    width:auto;
+    margin-top: 4px;
+    border-radius: 10px;
+}
+.loginBtn{
+    height:60px;
+    width:auto;
+    margin-top: 2px;
+    border-radius: 10px;
+}
+/* .static{
+    position: absolute;
+}
+.static:hover{
+   display: none;
+}
+.active{
+    opacity: 0;
+}
+.active:hover{
+    opacity: 100;
+} */
+
+/* ----------------------------- */
+.containPicture{
+    border-radius: 10px;
+}
+@media screen and (max-width: 450px) {
+    .hideMobile{
+        display: none;
+    }
+    .showMobile{
+        display: block;
+    }
+    .containPicture{
+        margin: 15px;
+        size: auto;
+        max-width: 300px;
+        height: auto;
+        float: left;
+    }
+    .pictureGallery{
+        width: 100%;
+    }
+    .navigation{
+        width: 100%;
+    }
+}
+@media screen and (min-width: 450px){
+    .hideDesktop{
+        display: none;
+    }
+    .containPicture{
+        margin: 15px;
+        size: auto;
+        width: 200px;
+        height: 200px;
+        float: left;
+    }
+    .pictureGallery{
+        width: 90%;
+    }
+    .navigation{
+        width: 90%;
+    }
+}
