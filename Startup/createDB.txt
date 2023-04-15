@@ -1,0 +1,241 @@
+
+CREATE SCHEMA IF NOT EXISTS `pcstoreproject`;
+USE `pcstoreproject` ;
+
+CREATE TABLE IF NOT EXISTS `userType` (
+  `userTypeID` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`userTypeID`),
+  UNIQUE INDEX `type_UNIQUE` (`type` ASC) VISIBLE,
+  UNIQUE INDEX `id_UNIQUE` (`userTypeID` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `userID` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `userTypeID` INT NOT NULL,
+  PRIMARY KEY (`userID`),
+  UNIQUE INDEX `userID_UNIQUE` (`userID` ASC) VISIBLE,
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  INDEX `fk_users_userType1_idx` (`userTypeID` ASC) VISIBLE,
+  CONSTRAINT `fk_users_userType1`
+    FOREIGN KEY (`userTypeID`)
+    REFERENCES `userType` (`userTypeID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2;
+
+CREATE TABLE IF NOT EXISTS `cart` (
+  `cartID` INT UNSIGNED NOT NULL,
+  `userID` INT NOT NULL,
+  PRIMARY KEY (`cartID`),
+  INDEX `fk_cart_users1_idx` (`userID` ASC) VISIBLE,
+  CONSTRAINT `fk_cart_users1`
+    FOREIGN KEY (`userID`)
+    REFERENCES `users` (`userID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `categoryID` INT NOT NULL,
+  `category_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`categoryID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `productID` INT NOT NULL AUTO_INCREMENT,
+  `categoryID` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `price` INT NOT NULL,
+  `quantity` INT NOT NULL,
+  `manufacturer` VARCHAR(45) NOT NULL,
+  `img_src` VARCHAR(255) NOT NULL,
+  `model` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`productID`),
+  UNIQUE INDEX `productID` (`productID` ASC) VISIBLE,
+  INDEX `categoryID` (`categoryID` ASC) VISIBLE,
+  CONSTRAINT `products_ibfk_1`
+    FOREIGN KEY (`categoryID`)
+    REFERENCES `category` (`categoryID`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5;
+
+CREATE TABLE IF NOT EXISTS `cart_has_products` (
+  `cart_cartID` INT UNSIGNED NOT NULL,
+  `productID` INT NOT NULL,
+  `oneProuctPrice` DOUBLE NOT NULL,
+  `count` INT NOT NULL,
+  INDEX `fk_cart_has_products1_products1_idx` (`productID` ASC) VISIBLE,
+  INDEX `fk_cart_has_products1_cart_idx` (`cart_cartID` ASC) VISIBLE,
+  UNIQUE INDEX `products_productID_UNIQUE` (`productID` ASC) VISIBLE,
+  CONSTRAINT `fk_cart_has_products1_cart`
+    FOREIGN KEY (`cart_cartID`)
+    REFERENCES `cart` (`cartID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cart_has_products1_products1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `chipsets` (
+  `chipsetID` INT NOT NULL,
+  `chipset_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`chipsetID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `cooling` (
+  `productID` INT NOT NULL,
+  `fan_type` ENUM('CPU Fan', 'Case Fan') NOT NULL,
+  `fan_speed` INT NOT NULL,
+  `fan_size` INT NOT NULL,
+  `air_flow` FLOAT NOT NULL,
+  `noise` FLOAT NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  CONSTRAINT `cooling_ibfk_1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `sockets` (
+  `socketID` INT NOT NULL,
+  `socket_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`socketID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `cpus` (
+  `productID` INT NOT NULL,
+  `base_clock` FLOAT NOT NULL,
+  `boost_clock` VARCHAR(45) NOT NULL,
+  `core_count` INT NOT NULL,
+  `thread_count` INT NOT NULL,
+  `series` VARCHAR(45) NOT NULL,
+  `socketID` INT NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  INDEX `fk_CPUs_Sockets1` (`socketID` ASC) VISIBLE,
+  CONSTRAINT `fk_CPUs_Sockets1`
+    FOREIGN KEY (`socketID`)
+    REFERENCES `sockets` (`socketID`),
+  CONSTRAINT `productID`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `gpus` (
+  `productID` INT NOT NULL,
+  `base_clock` FLOAT NOT NULL,
+  `boost_clock` VARCHAR(45) NOT NULL,
+  `core_count` INT NOT NULL,
+  `series` VARCHAR(45) NOT NULL,
+  `vendor` VARCHAR(45) NOT NULL,
+  `vram` INT NOT NULL,
+  `vram_type` VARCHAR(45) NOT NULL,
+  `connector_type` VARCHAR(45) NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  CONSTRAINT `gpus_ibfk_1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `motherboards` (
+  `productID` INT NOT NULL,
+  `socketID` INT NOT NULL,
+  `chipsetID` INT NOT NULL,
+  `supported_memory` ENUM('DDR3', 'DDR4', 'DDR5') NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  INDEX `socketID` (`socketID` ASC) VISIBLE,
+  INDEX `chipsetID` (`chipsetID` ASC) VISIBLE,
+  CONSTRAINT `motherboards_ibfk_1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`),
+  CONSTRAINT `motherboards_ibfk_2`
+    FOREIGN KEY (`socketID`)
+    REFERENCES `sockets` (`socketID`),
+  CONSTRAINT `motherboards_ibfk_3`
+    FOREIGN KEY (`chipsetID`)
+    REFERENCES `chipsets` (`chipsetID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `orders` (
+  `orderID` INT NOT NULL AUTO_INCREMENT,
+  `userID` INT NOT NULL,
+  `date` DATE NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
+  `paymentMethod` VARCHAR(45) NOT NULL,
+  `totalPrice` DOUBLE NOT NULL,
+  `status` ENUM('Waiting', 'Sent', 'Delivered', 'Completed') NOT NULL,
+  PRIMARY KEY (`orderID`),
+  UNIQUE INDEX `idOrders_UNIQUE` (`orderID` ASC) VISIBLE,
+  INDEX `userID_idx` (`userID` ASC) VISIBLE,
+  CONSTRAINT `userID`
+    FOREIGN KEY (`userID`)
+    REFERENCES `users` (`userID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `orders_have_products` (
+  `orderID` INT NOT NULL,
+  `productID` INT NOT NULL,
+  `currentPrice` DOUBLE NOT NULL,
+  `quantity` INT NOT NULL,
+  INDEX `orderID` (`orderID` ASC) VISIBLE,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  CONSTRAINT `orders_have_products_ibfk_1`
+    FOREIGN KEY (`orderID`)
+    REFERENCES `orders` (`orderID`),
+  CONSTRAINT `orders_have_products_ibfk_2`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `powerratings` (
+  `ratingID` INT NOT NULL,
+  `rating_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`ratingID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `psus` (
+  `productID` INT NOT NULL,
+  `PowerRatings_ratingID` INT NOT NULL,
+  `wattage` INT NOT NULL,
+  `type` ENUM('Modular', 'Semi-modular', 'Non-modular') NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  INDEX `PowerRatings_ratingID` (`PowerRatings_ratingID` ASC) VISIBLE,
+  CONSTRAINT `psus_ibfk_1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`),
+  CONSTRAINT `psus_ibfk_2`
+    FOREIGN KEY (`PowerRatings_ratingID`)
+    REFERENCES `powerratings` (`ratingID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `ram` (
+  `productID` INT NOT NULL,
+  `frequency` FLOAT NOT NULL,
+  `latency` INT NOT NULL,
+  `type` VARCHAR(45) NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  CONSTRAINT `ram_ibfk_1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `storage` (
+  `productID` INT NOT NULL,
+  `capacity` VARCHAR(45) NOT NULL,
+  `type` ENUM('HDD', 'SSD', 'NVMe SSD') NOT NULL,
+  `write_speed` FLOAT NOT NULL,
+  `read_speed` FLOAT NOT NULL,
+  `dram_cache` INT NOT NULL,
+  INDEX `productID` (`productID` ASC) VISIBLE,
+  CONSTRAINT `storage_ibfk_1`
+    FOREIGN KEY (`productID`)
+    REFERENCES `products` (`productID`))
+ENGINE = InnoDB;

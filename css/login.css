@@ -82,5 +82,10 @@ body {
     padding: 20px;
     margin: .5em 0 1.5em; }
 
-
+body{
+    background-color: var(--bg-color);
+    font-family: Comic Sans MS;
+    background-image: url("../Pictures/Main Page/background.png");
+    background-repeat: repeat;
+}
    

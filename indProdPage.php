@@ -121,7 +121,8 @@ $category = $categoryName['category_name']
                                     Price: <?= $itm['price']?> BGN
                                     
                                 </div>
-                                <button onclick="addToCart(<?php echo $id?>)">Add to cart</button>
+                                <button onclick="addToCart(<?php echo $id?>, wantedQty)">Add to cart</button>
+                                <input onchange="getNewQty()" id="qty<?php echo $id?>" type="number" value=1 >
                         </div>
                     </div>
                 </div> 
@@ -130,8 +131,13 @@ $category = $categoryName['category_name']
     </div>
 </body>
 
-<script src="shoppingCart.js"></script>
+<script src="js/shoppingCart.js"></script>
 <script>
+let wantedQty = parseInt(document.getElementById("qty<?php echo $id?>").value);
+function getNewQty(){
+    wantedQty = parseInt(document.getElementById("qty<?php echo $id?>").value);   
+    console.log(wantedQty);
+}
 
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
@@ -150,6 +156,5 @@ $category = $categoryName['category_name']
             }
         }
     }
-
 </script>
 </html>

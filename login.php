@@ -1,5 +1,6 @@
 <?php
 include_once("php/staticInfo.php");
+include_once("php/User/user.php");
 $connection = new PDO("mysql:host=$servername;dbname=$database", $dbusername, $dbPassword);
 
 session_start();
@@ -14,13 +15,13 @@ if ($_POST ['register']) {
 
 
     $check = $connection->query("SELECT * FROM users WHERE username = '" . $username . "'")->fetch();
+    $check2 = $connection->query("SELECT * FROM users WHERE email = '" . $email . "'")->fetch();
 
-    if ($check) {
+    if ($check || $check2) {
         $error = "This profile already exists";
     }
     if (!$username) {
         $error = "No username";
-
     }
     if (!$email) {
         $error = "No email";
@@ -31,11 +32,10 @@ if ($_POST ['register']) {
 
     if (!$error) {
 
-        $sql = "INSERT INTO users (username, email, password) VALUES (?,?,?)";
+        $sql = "INSERT INTO users (username, email, password, userTypeID) VALUES (?,?,?,1)";
         $connection->prepare($sql)->execute([$username, $email, $password]);
 
         $error = "Thank you!";
-
     }
 
 } else if ($_POST['login']) {
@@ -44,28 +44,20 @@ if ($_POST ['register']) {
     $password = $_POST['password'];
     $error2 = false;
 
-    $query = "SELECT * FROM users WHERE username = '" . $username . "' AND password = '" . $password . "';";
+    $query = "SELECT userID, username, email, userTypeID FROM users  WHERE username = '".$username."' AND password = '".$password."'";
 
-    $user = $connection->query($query)->fetch();
-
-    if ($user) {
-
-        $_SESSION['user'] = $user;
-
-        header("location:../PcStore/index.php");
+    $info = $connection->query($query)->fetch();
+    
+    if ($info) {
+        $user = new User($info['userID'], $info['username'],$info['email'],$info['userTypeID']);
+        $_SESSION['user'] = serialize($user);
+        header("location: index.php");
 
     } else {
-
         $error2 = "Incorrect Username or Password !";
     }
-
 }
-
-
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -134,29 +126,17 @@ if ($_POST ['register']) {
                     <div class="tab-content">
                         <label style="position:absolute; font-family: 'Times New Roman';"><br><?= $error2 ?></label> <br><br>
                     </div>
-
                     <?php
                 }?>
-            
                 <input type="submit" name='login' class="button" value="Login"><br>
-
             </form>
-
             <div class="help-text">
-
             </div>
         </div>
-
-
-
-
     </div>
 </div>
 
 </body>
-
-
-
 
 <script>
     jQuery(document).ready(function($) {

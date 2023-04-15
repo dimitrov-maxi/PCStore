@@ -1,0 +1,14 @@
+.backButtonImg{
+    display: inline-block;
+    width: 25px;
+    margin-right: 5px;
+}
+
+.backButton{
+    display: flex;
+}
+.backButtonText{
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+}

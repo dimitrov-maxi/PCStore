@@ -1,6 +1,19 @@
 <?php
-include_once("php/staticInfo.php");
-$search = @$_GET['search'];
+include_once("../php/staticInfo.php");
+include_once("../php/User/user.php");
+session_start();
+
+if(isset($_SESSION['user'])){
+    $user = unserialize($_SESSION['user']);
+    $usertype = $user -> getType();
+    if($usertype == 1){
+        header("location: index.php");
+    }
+}else{
+    header("location: index.php");
+}
+
+// $search = @$_GET['search'];
 
         $connections = new mysqli($servername, $dbusername, $dbPassword, $database);
         // Check connection
@@ -10,7 +23,7 @@ $search = @$_GET['search'];
 
 $rows = $connections -> query('SELECT * FROM products LEFT JOIN category ON products.categoryID = category.categoryID;');
 // $categories = $connections -> query('SELECT * FROM products LEFT JOIN categories ON products.categoryID = categories.categoryID');
-$orders = $connections -> query('SELECT * FROM pcstoreproject.orders;');
+$orders = $connections -> query('SELECT * FROM orders;');
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +32,7 @@ $orders = $connections -> query('SELECT * FROM pcstoreproject.orders;');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/admin.css?<?php echo time(); ?>">
+    <link rel="stylesheet" href="../css/admin.css?<?php echo time(); ?>">
     <!-- Bootstrap CSS-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
@@ -52,6 +65,9 @@ $orders = $connections -> query('SELECT * FROM pcstoreproject.orders;');
             </div>
         </div>
     </div>
+    <div id="greet">
+        <h2>Hi <?php echo $user -> getUsername();?></h2>
+    </div>
     
 
     <div id="products">
@@ -82,24 +98,58 @@ $orders = $connections -> query('SELECT * FROM pcstoreproject.orders;');
                         <td class = "col"><?= $row['quantity']?></td>
                         <td class = "col"><?= $row['manufacturer']?></td>
                         <td class = "col"><?= $row['model']?></td>
-                        <td class = "col"><img src="<?= $row['img_src']?>" style="width: 200px"></td>
+                        <td class = "col"><img src="../<?= $row['img_src']?>" style="width: 200px"></td>
                         <td class = "col"><a href="edit.php?id=<?= $row['productID']?>">Edit</a></td>
-                        <td class = "col"><a href="deleteProduct.php?id=<?= $row['productID']?>">Delete</a></td>
+                        <td class = "col"><a href="managment/delete.php?id=<?= $row['productID']?>">Delete</a></td>
                     </tr><br>
                     <?php
                 }
                 ?>
         </table>
     </div>
-
-    <div id="addProductsMenu">
-        <a href="product managment/addCPU.php"><button>ADD NEW CPU</button></a>
-        <button>ADD NEW GPU</button>
-        <button>ADD NEW MOBO</button>
-        <button>ADD NEW PSU</button>
-        <button>ADD NEW RAM</button>
-        <button>ADD NEW Storage</button>
-        <button>ADD NEW Cooling</button>
+    <div class="addProductsMenu" id="addProductsMenu">
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/CPU.png" alt="">
+                <button class="addProductButton">ADD NEW CPU</button>
+            </a>
+        </div>       
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/MOBO.png" alt="">
+                <button class="addProductButton">ADD NEW MOBO</button>
+            </a>
+        </div>     
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/RAM.png" alt="">
+                <button class="addProductButton">ADD NEW RAM</button>
+            </a>
+        </div>
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/PSU.png" alt="">
+                <button class="addProductButton">ADD NEW PSU</button>
+            </a>
+        </div>        
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/GPU.png" alt="">
+                <button class="addProductButton">ADD NEW GPU</button>
+            </a>
+        </div>
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/Storage.png" alt="">
+                <button class="addProductButton">ADD NEW Storage</button>
+            </a>
+        </div>
+        <div class="addProducts">
+            <a href="product managment/addCPU.php">
+                <img class="addProductPic" src="../Pictures/Admin/Cooling.png" alt="">
+                <button class="addProductButton">ADD NEW Cooling</button>
+            </a>
+        </div>
     </div>
 
     <div id="viewSales" class="sales">
@@ -188,8 +238,7 @@ $orders = $connections -> query('SELECT * FROM pcstoreproject.orders;');
         }
         function addProductsMenu(){
             hideAll();
-            document.getElementById("addProductsMenu").style.display = "block";
-
+            document.getElementById("addProductsMenu").style.display = "flex";
         }
         function showSales() {
             hideAll();

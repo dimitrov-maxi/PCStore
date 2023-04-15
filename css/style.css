@@ -48,7 +48,6 @@
     background-color: aqua;
 }
 
-
 .contain{
     align-items: center;
     max-width: 370px;
@@ -65,13 +64,13 @@
 .contain:hover{
     background-color: #3498db;
 }
-
 .logo{
+    background-color: var(--bg-color);
+    border-radius: 30%;
     padding: 20px;
     width: 100%;
     max-width: 600px;
     height: auto;
-    /* auto  */
 }
 
 .search{
@@ -169,9 +168,8 @@
 .dropdown-content a:hover {
     background-color: #2C3E50;
     color: white;
-    z-index:2;}
-
-.show {display:block;}
+    z-index:2;
+}
 
 /* ------------------------------------------------------------ */
 
@@ -247,6 +245,9 @@ input:checked + .slider:before {
 html, .theme{
     background-color: var(--bg-color);
     font-family: Comic Sans MS;
+    background-image: url("../Pictures/Main Page/background.png");
+    background-repeat: repeat;
+    
 }
 
  :root {
@@ -274,6 +275,18 @@ html, .theme{
     margin-top: 2px;
     border-radius: 10px;
 }
+.userGreet{
+    z-index: 2;
+    background-color: #E74C3C;
+    position: absolute;
+    border-radius: 5px;
+}
+.hide{
+    display: none;
+}
+.show {
+    display:block;
+}
 /* .static{
     position: absolute;
 }
@@ -291,6 +304,12 @@ html, .theme{
 .containPicture{
     border-radius: 10px;
 }
+.cartContent{
+    background-color: #E74C3C;
+    position: absolute;
+    border-radius: 10px;
+}
+
 @media screen and (max-width: 450px) {
     .hideMobile{
         display: none;
@@ -310,6 +329,9 @@ html, .theme{
     }
     .navigation{
         width: 100%;
+    }
+    .logo{
+        border-radius: 0px;
     }
 }
 @media screen and (min-width: 450px){

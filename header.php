@@ -1,6 +1,15 @@
+<?php
+include_once("php/User/user.php");
+session_start();
+
+if(isset($_SESSION['user'])){
+    $user = unserialize($_SESSION['user']);
+    $username = $user -> getUsername();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,7 +37,7 @@
     </label>
 </div>
 
-<div class="container-fluid mx-auto text-center theme">
+<div class="container-fluid mx-auto text-center">
     <a href="index.php">
         <img src="Pictures\Main Page\logo6v3.png" class="logo">
     </a>    
@@ -42,26 +51,19 @@
                 <img onmouseover="showDropown()" class = "menuBtn dropbtn showMobile hideDesktop" src="Pictures/Main Page/menu.png">
 
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="#CPU">Processors</a>
-                    <a href="#MOBO">Motherboards</a>
-                    <a href="#RAM">RAM</a>
-                    <a href="#PSU">Power suplies</a>
-                    <a href="#GPU">Videocards</a>
-                    <a href="#Storage">Storage</a>
-                    <a href="#Cooling">Cooling</a>
-                    <!-- <a href="filteredProducts/CPU.php">Processors</a>
-                    <a href="itm_mobo.php">Motherboards</a>
-                    <a href="itm_ram.php">RAM</a>
-                    <a href="itm_psu.php">Power suplies</a>
-                    <a href="itm_gpu.php">Videocars</a>
-                    <a href="itm_storage.php">Storage</a>
-                    <a href="itm_cool.php">Cooling</a> -->
+                    <a href="?category=CPU">Processors</a>
+                    <a href="?category=MOBO">Motherboards</a>
+                    <a href="?category=RAM">RAM</a>
+                    <a href="?category=PSU">Power suplies</a>
+                    <a href="?category=GPU">Videocards</a>
+                    <a href="?category=Storage">Storage</a>
+                    <a href="?category=Cooling">Cooling</a>
                 </div>
             </div>
         </div>
 
         <div class="col">
-            <form>
+            <form action="index.php">
                 <div class="input-group rounded search showMobile">
                     <input type="text" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" autocomplete="off"/>
                 </div>
@@ -69,24 +71,30 @@
         </div>
 
         <div class="col">
-            <img onmouseover="showDropown()" onclick="goToBuyPage()" class="menuBtn cartBtn" src="Pictures\Main Page\cart.png">
-                <div id="myCart" class="cart-content">
-                    <script>
-                        // cart = JSON.parse(getCookie('cart'));
-                        // cart.forEach(element => {
-                        //     let text;
-                        //     text += `<a href="indProdPage.php#${element}">prodID = ${element}</a>`                        
-                        // });
-                        // document.write.getElementById="myCart" = text;
-                        
-                    </script>
+            <img onmouseover="showCart()" onclick="goToBuyPage()" class="menuBtn cartBtn" src="Pictures\Main Page\cart.png">
+                <div id="myCart" class="cartContent hide">
+                    <h1>Cart is empty</h1>
                 </div>
         </div>
 
         <div class="col">
-            <!-- <a href="login.php" class="loginbtn"> -->
-            <!-- <img class="loginBtn static" src="Pictures\Main Page\login_v3.png"> -->
-            <img class="loginBtn" src="Pictures\Main Page\login_v3.gif">
+            <div id=login>
+            <?php 
+                    if(isset($username)){?>
+                        <img onmouseover="showLogin()" class="loginBtn" src="Pictures\Main Page\login_v3.gif">
+                        <h2 id="userGreet" class="userGreet hide">Hi <?php echo $username; ?></h2>
+                        <?php
+                    }else{
+                        ?>
+                        <a href="login.php" class="loginbtn">
+                        <!-- <img class="loginBtn static" src="Pictures\Main Page\login_v3.png"> -->
+                        <img class="loginBtn" src="Pictures\Main Page\login_v3.gif">
+                        <h2 id="userGreet" class="userGreet hide">You are not logged in</h2>
+                        </a>
+                        <?php
+                    }
+                    ?>
+            </div>
         </div>
     </div>
 </div>
@@ -109,14 +117,24 @@
             document.documentElement.setAttribute('data-theme', 'light');
             localStorage.setItem('theme', 'light');
         }
-        else {        document.documentElement.setAttribute('data-theme', 'dark');
+        else {        
+            document.documentElement.setAttribute('data-theme', 'dark');
             localStorage.setItem('theme', 'dark');
         }    
     }
 
     function showCart() {
-            document.getElementById("myCart").classList.toggle("show");
+        document.getElementById("myCart").classList.toggle("show");
+        document.getElementById("myCart").classList.toggle("hide");
     }
+    //     cart = JSON.parse(getCookie('cart'));
+    //     let text;
+    //     for (let [key, value] in cart){
+    //         console.log(key, value);
+    //         text += `<a href="indProdPage.php#${key}">prodID = ${key}</a>`
+    //     }
+    //     document.write.getElementById="myCart" = text;
+    // }
 
     // window.onclick = function(event) {
         //     if (!event.target.matches('.cartBtn')) {
@@ -133,6 +151,9 @@
     // ---------------------------------------------------------
     function showDropown() {
         document.getElementById("myDropdown").classList.toggle("show");
+    }
+    function showLogin(){
+        document.getElementById("userGreet").classList.toggle("show");
     }
 
         // Close the dropdown menu if the user clicks outside of it
@@ -152,6 +173,19 @@
     toggleSwitch.addEventListener('change', switchTheme, false);
 
     function goToBuyPage() {
-        location.href = "php/orderInfo.php";
+        location.href = "php/cart/orderInfo.php";
     }
 </script>
+<!-- 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("myCart").click(function(){
+    $.ajax({url: "demo_test.txt", success: function(result){
+      $("#div1").html(result);
+    }});
+  });
+});
+</script>
+</head>
+<body> -->

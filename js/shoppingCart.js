@@ -1,26 +1,39 @@
 // var shoppingCart = [];
 
-function addToCart(id){
+function addToCart(id, qty){
     let check = getCookie("cart");
     if (check != "") {
+        let cart = JSON.parse(getCookie('cart'));
+        if(cart[id]!= null){
+            cart[id] += qty;
+            newCart = JSON.stringify(cart)
+            createCookie('cart', newCart, 30);
+        }else{
+            cart[id] = qty;
 
-        let obj = JSON.parse(getCookie('cart'));
-        let res = [];
-
-        for(var i in obj){
-            res.push(obj[i]);
+            newCart = JSON.stringify(cart)
+            createCookie('cart', newCart, 30);
         }
-
-        cart = JSON.stringify(res.concat(id))
-        createCookie('cart', cart, 30);
     }else{
-        alert("first product")
-        createCookie('cart', id, 30);
+        let cart = {}
+        cart[id] = qty;
+        createCookie('cart', JSON.stringify(cart), 30);
     }
     viewCart();
 }
 function deleteCart(){
     document.cookie = "cart = ''; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+function changeCart(id, qty){
+    let cart = JSON.parse(getCookie('cart'));
+
+    if(cart[id] < qty){
+        cart[id] += qty-cart[id];
+    }else if(cart[id] > qty){
+        cart[id] -= cart[id] - qty;
+    }else if(qty < 0){
+        cart.delete(cart[id]);
+    }
 }
 
 function viewCart(){
@@ -28,7 +41,6 @@ function viewCart(){
     if(cart == ""){
         alert("cart is empty")
     }else{
-        alert(cart)
         console.log(cart)
     }
 }

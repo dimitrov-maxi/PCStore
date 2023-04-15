@@ -1,21 +1,28 @@
 <?php
-// include_once("php/staticInfo.php");
 include_once("php/staticInfo.php");
+
 $connection = new PDO("mysql:host=$servername;dbname=$database", $dbusername, $dbPassword);
 $search = @$_GET['search'];
 
 if($search) {
     
-    $query = $connection->prepare('SELECT * from products where name LIKE ?');
+    $query = $connection->prepare('SELECT p.productID, p.name, p.img_src, p.price, p.quantity, c.category_name FROM products as p 
+                                    INNER JOIN category as c ON p.categoryID = c.categoryID
+                                    WHERE p.name LIKE ? ;');
 
     $query->execute(["%".$search."%"]);
 
     $rows = $query->fetchAll();
 
+} else if(isset($_GET['category'])){
+
+    $rows = $connection -> query('SELECT p.productID, p.name, p.img_src, p.price, p.quantity, c.category_name FROM products as p 
+                                    INNER JOIN category as c ON p.categoryID = c.categoryID
+                                    WHERE c.category_name = "'.$_GET['category'].'";');
+
 } else {
-
-    $rows = $connection -> query('SELECT name, price, img_src, productID FROM pcstoreproject.products');
-
+    $rows = $connection -> query('SELECT p.productID, p.name, p.img_src, p.price, p.quantity, c.category_name FROM products as p 
+                                    LEFT JOIN category as c ON p.categoryID = c.categoryID;');
 }
 
 ?>
@@ -62,11 +69,11 @@ if($search) {
 
         <!-- --  PRODUCTS --- -->
         <div style="margin-top: 20px">
-            <div class="displayProducts">
+            <div class="displayProducts ">
                 <?php
                 foreach( $rows as $row ) {
                     ?>
-                    <div class = "contain" style="flex: auto">
+                    <div class = "contain <?= $row['category_name'] ?>" style="flex: auto">
                         <a href="indProdPage.php?id=<?= $row['productID'] ?>" style="text-decoration: none; color: black">
                             <div class = row>
                                 <div class = col style="display: flex; justify-content: space-evenly; align-content: center;">
