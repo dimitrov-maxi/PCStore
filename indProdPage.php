@@ -121,8 +121,22 @@ $category = $categoryName['category_name']
                                     Price: <?= $itm['price']?> BGN
                                     
                                 </div>
+                                <?php
+                                if (isset($_SESSION['user'])){?>
+                                    <form action="php/Cart/addToCart.php?id=<?php echo $id?>" method="post">
+                                        <div class="row">
+                                            <input class="col" type="number" name="count" value="1"><br>
+                                            <button class="col" type="submit">Add to cart</button>
+                                        </div>
+                                    </form>
+                                    <?php
+                                }else{
+                                ?>
                                 <button onclick="addToCart(<?php echo $id?>, wantedQty)">Add to cart</button>
                                 <input onchange="getNewQty()" id="qty<?php echo $id?>" type="number" value=1 >
+                                <?php
+                                }
+                                ?>
                         </div>
                     </div>
                 </div> 

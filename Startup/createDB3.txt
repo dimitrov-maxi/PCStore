@@ -68,7 +68,6 @@ AUTO_INCREMENT = 5;
 CREATE TABLE IF NOT EXISTS `cart_has_products` (
   `cartID` INT UNSIGNED NOT NULL,
   `productID` INT NOT NULL,
-  `oneProuctPrice` DOUBLE NOT NULL,
   `count` INT NOT NULL,
   INDEX `fk_cart_has_products1_products1_idx` (`productID` ASC) VISIBLE,
   INDEX `fk_cart_has_products1_cart_idx` (`cartID` ASC) VISIBLE,

@@ -4,7 +4,6 @@
   }
 table {
     border-collapse: collapse;
-    width: 75%;
 }
 
 td, th {
@@ -17,10 +16,10 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 .dash{
+    display: block;
     align-items: left;
     /* min-width: 300px;
     min-height: 100%; */
-    position: sticky;
     height: 100vh;
     width: 20%;
     float: left;
@@ -95,4 +94,8 @@ tr:nth-child(even) {
         width: 100%;
         overflow: auto;
     }
+}
+@media screen and (min-width: 600px){
+    .dash{position: fixed;}
+    .workplace{margin-left: 20%;}
 }

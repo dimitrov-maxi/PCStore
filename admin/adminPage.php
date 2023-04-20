@@ -65,11 +65,12 @@ $orders = $connections -> query('SELECT * FROM orders;');
             </div>
         </div>
     </div>
-    <div id="greet">
-        <h2>Hi <?php echo $user -> getUsername();?></h2>
-    </div>
     
-
+    
+    <div class = workplace>
+        
+            <h2 style="float:right">Hi <?php echo $user -> getUsername();?></h2>
+        
     <div id="products">
         <table>
             <tr>
@@ -99,7 +100,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
                         <td class = "col"><?= $row['manufacturer']?></td>
                         <td class = "col"><?= $row['model']?></td>
                         <td class = "col"><img src="../<?= $row['img_src']?>" style="width: 200px"></td>
-                        <td class = "col"><a href="edit.php?id=<?= $row['productID']?>">Edit</a></td>
+                        <td class = "col"><a href="managment/edit/edit<?= $row['category_name']?>.php?id=<?= $row['productID']?>">Edit</a></td>
                         <td class = "col"><a href="managment/delete.php?id=<?= $row['productID']?>">Delete</a></td>
                     </tr><br>
                     <?php
@@ -153,7 +154,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
     </div>
 
     <div id="viewSales" class="sales">
-        <canvas id="salesChart" style="width:100%;max-width:600px;"></canvas>
+        <canvas id="salesChart" style="width: auto; max-width: 600px"></canvas>
 
         <table>
             <tr>
@@ -180,26 +181,66 @@ $orders = $connections -> query('SELECT * FROM orders;');
                         <td class = "col"><?= $row2['paymentMethod']?></td>
                         <td class = "col"><?= $row2['totalPrice']?></td>
                         <td class = "col"><?= $row2['status']?></td>
-                        <td class = "col"><a href="viewOrder.php?id=<?= $row2['orderID']?>">View</a></td>
+                        <td class = "col"><a href="orderManagment/viewOrder.php?orderID=<?= $row2['orderID']?>">View</a></td>
                     </tr><br>
                     <?php
                 }
                 ?>
         </table>
     </div>
+</div>
+<?php
+
+// Define the query to retrieve the sum of 'totalPrice' for each day
+$sql = "SELECT DATE(date) AS date, SUM(totalPrice) AS total_sales 
+        FROM orders 
+        WHERE date BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW() 
+        GROUP BY DATE(date);";
+
+// Execute the query
+$result = mysqli_query($connections, $sql);
+$data = array();
+// Loop through the results and output the data
+while($row = mysqli_fetch_assoc($result)) {
+    $data[strval($row['date'])] = $row['total_sales'];
+}
+
+?>
+
 
     <script>
-        let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        let weekSales = [200, 350, 500, 100, 125, 250, 10];
+        let days = [];
+        let weekSales = [];
+        <?php 
+        foreach($data as $date => $sale){
+            ?>days.push(<?php echo $date;?>)
+            weekSales.push(<?php echo $sale;?>)
+        <?php
+        }
+        ?>
+        console.log(days);
+        let weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let today = new Date();
+        let lastSevenDays = []; 
+            
+        for (let i = 6; i >= 0; i--) { 
+            let date = new Date(); 
+            date.setDate(today.getDate() - i); 
+            let weekday = weekdays[date.getDay()]; 
+            lastSevenDays.push(weekday); 
+        }
+
+        
+        // let weekSales = [200, 350, 500, 100, 125, 250, 10];
         let colors = [];
         for (i in weekSales) {
-            if(weekSales[i] >= 350){
+            if(weekSales[i] >= 5000){
                 colors.push("green");
             }
-            else if(weekSales[i] < 350 && weekSales[i] > 150){
+            else if(weekSales[i] < 5000 && weekSales[i] > 1000){
                 colors.push("orange");
             }
-            else if(weekSales[i] < 150){
+            else if(weekSales[i] < 1000){
                 colors.push("red");
             }
         }
@@ -207,7 +248,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
         new Chart("salesChart", {
             type: "bar",
             data: {
-                labels: days,
+                labels: lastSevenDays,
                 datasets: [{
                 backgroundColor: colors,
                 data: weekSales
@@ -252,7 +293,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
             hideAll();
         }
         function logout(){
-
+            unset($_SESSION['user']);
         }
     </script>
 </body>

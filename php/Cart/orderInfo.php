@@ -15,9 +15,15 @@
         </a>
     </div>
     <?php
-        include_once("cartFunct.php");
-        displayOrder();
-        echo "Total Price is: ".getTotalPrice();
+    session_start();
+    include_once("cartFunct.php");
+    if(isset($_SESSION['user'])){
+        include_once("../User/user.php");
+        $userID = unserialize($_SESSION['user']) -> getUserID();
+        displayCart($userID);
+    }else{
+        displayCart(0);
+    }
        ?>
 
     <form action="finishOrder.php" method="post">

@@ -8,7 +8,7 @@ if($search) {
     
     $query = $connection->prepare('SELECT p.productID, p.name, p.img_src, p.price, p.quantity, c.category_name FROM products as p 
                                     INNER JOIN category as c ON p.categoryID = c.categoryID
-                                    WHERE p.name LIKE ? ;');
+                                    WHERE p.name LIKE ? AND p.quantity > 0;');
 
     $query->execute(["%".$search."%"]);
 
@@ -18,11 +18,11 @@ if($search) {
 
     $rows = $connection -> query('SELECT p.productID, p.name, p.img_src, p.price, p.quantity, c.category_name FROM products as p 
                                     INNER JOIN category as c ON p.categoryID = c.categoryID
-                                    WHERE c.category_name = "'.$_GET['category'].'";');
+                                    WHERE c.category_name = "'.$_GET['category'].'"  AND p.quantity > 0;');
 
 } else {
     $rows = $connection -> query('SELECT p.productID, p.name, p.img_src, p.price, p.quantity, c.category_name FROM products as p 
-                                    LEFT JOIN category as c ON p.categoryID = c.categoryID;');
+                                    LEFT JOIN category as c ON p.categoryID = c.categoryID WHERE p.quantity > 0;');
 }
 
 ?>

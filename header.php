@@ -71,7 +71,7 @@ if(isset($_SESSION['user'])){
         </div>
 
         <div class="col">
-            <img onmouseover="showCart()" onclick="goToBuyPage()" class="menuBtn cartBtn" src="Pictures\Main Page\cart.png">
+            <img id="cartBtn" onmouseover="showCart()" onclick="goToBuyPage()" class="menuBtn cartBtn" src="Pictures\Main Page\cart.png">
                 <div id="myCart" class="cartContent hide">
                     <h1>Cart is empty</h1>
                 </div>
@@ -81,7 +81,9 @@ if(isset($_SESSION['user'])){
             <div id=login>
             <?php 
                     if(isset($username)){?>
-                        <img onmouseover="showLogin()" class="loginBtn" src="Pictures\Main Page\login_v3.gif">
+                        <a href="php/User/userPage.php">
+                            <img onmouseover="showLogin()" class="loginBtn" src="Pictures\Main Page\login_v3.gif">
+                        </a>
                         <h2 id="userGreet" class="userGreet hide">Hi <?php echo $username; ?></h2>
                         <?php
                     }else{
@@ -176,16 +178,22 @@ if(isset($_SESSION['user'])){
         location.href = "php/cart/orderInfo.php";
     }
 </script>
-<!-- 
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-  $("myCart").click(function(){
-    $.ajax({url: "demo_test.txt", success: function(result){
-      $("#div1").html(result);
-    }});
+    $(document).ready(function() {
+  $('#cartBtn').mouseover(function() {
+    $.ajax({
+      url: 'php/Cart/showCartInHeader.php', // Replace with the URL of your PHP script
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        console.log(JSON.parse(data)); 
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log(textStatus, errorThrown); // Log any error to the console
+      }
+    });
   });
 });
 </script>
-</head>
-<body> -->
