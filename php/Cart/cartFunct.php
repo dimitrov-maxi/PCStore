@@ -95,7 +95,7 @@
             }else{
                 $cart = json_decode($_COOKIE['cart']);
                 foreach ($cart as $key => $value) {
-                    $productsPrice = $connection -> query('SELECT price, name FROM pcstoreproject.products WHERE productID ='.$key.'');
+                    $productsPrice = $connection -> query('SELECT price, name FROM products WHERE productID ='.$key.'');
 
                     foreach ($productsPrice as $row){
                         echo "<p> ".$row['name']." -> ".$row['price']." </p>";
@@ -264,9 +264,11 @@
         }
     }
     function checkAction($userID, $productID, $count){
-        if(checkProduct($userID, $productID)){
-            updateProduct($userID, $productID, checkProduct($userID, $productID), $count);
-        }else{
+        if(checkProduct($userID, $productID) != null || checkProduct($userID, $productID) === 0){
+            if($count > 0){
+                updateProduct($userID, $productID, checkProduct($userID, $productID), $count);
+            }
+        }else if($count > 0){
             addProductToCart($userID, $productID, $count);
         }
     }

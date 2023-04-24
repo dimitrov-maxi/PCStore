@@ -100,7 +100,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
                         <td class = "col"><?= $row['manufacturer']?></td>
                         <td class = "col"><?= $row['model']?></td>
                         <td class = "col"><img src="../<?= $row['img_src']?>" style="width: 200px"></td>
-                        <td class = "col"><a href="managment/edit/edit<?= $row['category_name']?>.php?id=<?= $row['productID']?>">Edit</a></td>
+                        <td class = "col"><a href="managment/edit.php?id=<?= $row['productID']?>&category=<?= $row['category_name']?>">Edit</a></td>
                         <td class = "col"><a href="managment/delete.php?id=<?= $row['productID']?>">Delete</a></td>
                     </tr><br>
                     <?php

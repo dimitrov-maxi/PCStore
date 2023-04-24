@@ -1,0 +1,11 @@
+.element{
+    margin: 10px;
+    height: 20px;
+}
+.form{
+    margin-left: 40vw;
+    margin-top: 15vh;
+    border-style: solid;
+    border-radius: 5px;
+    width: fit-content;
+}

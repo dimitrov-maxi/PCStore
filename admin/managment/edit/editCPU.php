@@ -1,39 +1,27 @@
-<form method="post" action="update_cpu.php">
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>Speed</th>
-        <th>Cores</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php
-      include_once("../../../php/staticInfo.php");
-        $connection = new PDO("mysql:host=$servername;dbname=$database", $dbusername, $dbPassword);
-        $query = 'SELECT * FROM CPU WHERE productID = ?';
-        $data = $connection -> prepare($query);
-        $data -> execute(array($productID));
-        $result = $data -> fetchAll();
-        
-        // Loop through each row and display the data in input fields
-        while ($row = mysqli_fetch_assoc($result)) {
-          echo "<tr>";
-          echo "<td><input type='text' name='brand[]' value='" . $row['brand'] . "'></td>";
-          echo "<td><input type='text' name='model[]' value='" . $row['model'] . "'></td>";
-          echo "<td><input type='text' name='speed[]' value='" . $row['speed'] . "'></td>";
-          echo "<td><input type='text' name='cores[]' value='" . $row['cores'] . "'></td>";
-          echo "<td><input type='text' name='price[]' value='" . $row['price'] . "'></td>";
-          echo "</tr>";
-        }
-        // Close the database connection
-        mysqli_close($conn);
-      ?>
-    </tbody>
-  </table>
-  
-  <input type="submit" value="Save changes">
-</form>
+<?php
+    include("../../../php/staticInfo.php");
+    $connection = new PDO("mysql:host=$servername;dbname=$database", $dbusername, $dbPassword);   
+
+    $id = $_GET['id'];
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $quantity = $_POST['quantity'];
+    $model = $_POST['model'];
+    $manufacturer = $_POST['manufacturer'];
+    $img_src = "";
+    $base_clock = floatval($_POST['base_clock']);
+    $boost_clock = $_POST['boost_clock'];
+    $core_count = $_POST['core_count'];
+    $thread_count = $_POST['thread_count'];
+    $series = $_POST['series'];
+    $socket = $_POST['socketID'];
+
+    $query ="UPDATE `products` SET `name` = ?, `price` = ?, `quantity` = ?, `model` = ?, `manufacturer` = ?  WHERE (`productID` = ?);";
+    $query2 ="UPDATE `CPUs` SET `base_clock` = ?,`boost_clock` = ?,`core_count` = ?,`thread_count` = ?,`series` = ?,`socketID` = ? WHERE (`productID` = ?);";
+
+    // var_dump($query + "q2: " + $query2)
+    $connection->prepare($query)->execute(array($name, $price, $quantity, $model, $manufacturer, $id));
+    $connection->prepare($query2)->execute(array($base_clock, $boost_clock, $core_count, $thread_count, $series, $socket, $id));
+
+    header("location: ../../adminPage.php");
+?>

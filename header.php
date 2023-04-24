@@ -51,13 +51,13 @@ if(isset($_SESSION['user'])){
                 <img onmouseover="showDropown()" class = "menuBtn dropbtn showMobile hideDesktop" src="Pictures/Main Page/menu.png">
 
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="?category=CPU">Processors</a>
-                    <a href="?category=MOBO">Motherboards</a>
-                    <a href="?category=RAM">RAM</a>
-                    <a href="?category=PSU">Power suplies</a>
-                    <a href="?category=GPU">Videocards</a>
-                    <a href="?category=Storage">Storage</a>
-                    <a href="?category=Cooling">Cooling</a>
+                    <a href="index.php?category=CPU">Processors</a>
+                    <a href="index.php?category=MOBO">Motherboards</a>
+                    <a href="index.php?category=RAM">RAM</a>
+                    <a href="index.php?category=PSU">Power suplies</a>
+                    <a href="index.php?category=GPU">Videocards</a>
+                    <a href="index.php?category=Storage">Storage</a>
+                    <a href="index.php?category=Cooling">Cooling</a>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@ if(isset($_SESSION['user'])){
             <div id=login>
             <?php 
                     if(isset($username)){?>
-                        <a href="php/User/userPage.php">
+                        <a href="userPage.php">
                             <img onmouseover="showLogin()" class="loginBtn" src="Pictures\Main Page\login_v3.gif">
                         </a>
                         <h2 id="userGreet" class="userGreet hide">Hi <?php echo $username; ?></h2>

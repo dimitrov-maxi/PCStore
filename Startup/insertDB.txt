@@ -36,7 +36,7 @@ INSERT INTO `cpus` (`productID`, `base_clock`, `boost_clock`, `core_count`, `thr
 INSERT INTO `products` (`productID`, `categoryID`, `name`, `price`, `quantity`, `manufacturer`, `img_src`, `model`) VALUES ('2', '2', 'MSI GTX 1650 VENTUS XS', '400', '20', 'Nvidia', 'Pictures\\Products\\GPU\\GTX 1650.jpg', 'GTX 1650');
 INSERT INTO `gpus` (`productID`, `base_clock`, `boost_clock`, `core_count`, `series`, `vendor`, `vram`, `vram_type`, `connector_type`) VALUES ('2', '1.48', '1.74', '896', 'GTX 1650', 'MSI', '4', 'GDDR5', 'None');
 
-INSERT INTO `products` (`productID`, `categoryID`, `name`, `price`, `quantity`, `manufacturer`, `img_src`, `model`) VALUES ('3', '3', 'Toughpower GF1 750W', '250', '7', 'Thermaltake', 'Pictures\\Products\\PSU\\ToughpowerGF1_750W.jpg', 'TOUGHPOWER');
+INSERT INTO `products` (`productID`, `categoryID`, `name`, `price`, `quantity`, `manufacturer`, `img_src`, `model`) VALUES ('3', '5', 'Toughpower GF1 750W', '250', '7', 'Thermaltake', 'Pictures\\Products\\PSU\\ToughpowerGF1_750W.jpg', 'TOUGHPOWER');
 INSERT INTO `psus` (`productID`, `PowerRatings_ratingID`, `wattage`, `type`) VALUES ('3', '4', '750', 'Modular');
 
 INSERT INTO `products` (`productID`, `categoryID`, `name`, `price`, `quantity`, `manufacturer`, `img_src`, `model`) VALUES ('4', '4', 'TEAM FORCE DELTA 3200Mhz 8GB', '85', '32', 'TEAM FORCE', 'Pictures\\Products\\RAM\\TeamGroup-TeamForce_Delta_3200_8GB.jpg', 'TEAM GROUP DELTA');
