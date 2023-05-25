@@ -25,15 +25,20 @@ function deleteCart(){
     document.cookie = "cart = ''; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 function changeCart(id, qty){
-    let cart = JSON.parse(getCookie('cart'));
+    let cart = [];
+    cart = JSON.parse(getCookie('cart'));
+    if(qty <= 0){
+        location.reload()
+        // cart.delete(cart[id]);
+        delete cart[id];
+        console.log(cart)   
 
-    if(cart[id] < qty){
-        cart[id] += qty-cart[id];
     }else if(cart[id] > qty){
         cart[id] -= cart[id] - qty;
-    }else if(qty < 0){
-        cart.delete(cart[id]);
+    }else if(cart[id] < qty){
+        cart[id] += qty-cart[id];
     }
+    createCookie('cart', JSON.stringify(cart), 30);
 }
 
 function viewCart(){

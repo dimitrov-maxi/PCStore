@@ -10,6 +10,9 @@ if (isset($_SESSION['user'])){
 
     echo "Hi ".$user -> getUsername();
     ?>
+    <form action="php/User/logout.php">
+        <button>logout</button>
+    </form>
     <div class = >
         <table>
             <tr>

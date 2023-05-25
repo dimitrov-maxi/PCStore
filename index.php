@@ -80,14 +80,12 @@ if($search) {
                                     <img alt src="<?= $row['img_src'] ?>" class ="containPicture"><br>
                                 </div>
                                 <div class="col">
-                                    <div style=" margin-left:15px;">
+                                    <div class="prodInfo">
                                         <p class="text_contain"><?= $row["name"] ?></p><br>
-                                         PRICE: <?= $row["price"] ?><br> BGN
-                                        </p>
-                                     </div>    
-                                     <!-- <div>
-                                        <button class="buyBttn">Buy</button>
-                                    </div>  -->
+                                        <p>
+                                            PRICE: <?= $row["price"] ?><br> BGN
+                                        </p>                                         
+                                    </div>
                                 </div>
                             </div>                                                      
                     </div>

@@ -28,7 +28,11 @@
 
     <form action="finishOrder.php" method="post">
         Address <input type="text" name="address"><br>
-        Payment Method <input type="text" name="paymentMethod"><br>
+        Payment Method: <select name="" id="">                   
+                            <option value="delivery">at delivery</option>
+                            <option disabled value="card">Card</option>
+                        </select><br>
+         <!-- <input type="text" name="paymentMethod"><br> -->
         <button>Finish order</button>
     </form>
 </body>

@@ -154,9 +154,25 @@
                             <p>Name: <?php echo $product['name']?></p>
                             <p>Price: <?php echo $product['price']?></p>
                         </a>
+                        <?php
+                        if($userID == 0){?>
+                            <input id="qtyID<?php echo $product['productID']?>" onchange="changeCart(<?php echo $product['productID']?>, getQty(<?php echo $product['productID']?>))" type="number" name="count" value="<?php echo $product['count']?>">
+                            <script src="../../js/shoppingCart.js"></script>
+                            <script>
+                                function getQty(id){
+                                    wantedQty = parseInt(document.getElementById("qtyID"+id).value);
+                                    return wantedQty;
+                                }
+                            </script>
+                        <?php                        
+                        }else{
+                        ?>
                         <form action="updateCart.php?id=<?php echo $product['productID']?>" method="post">
-                                Count:<input type="number" name="count" value="<?php echo $product['count']?>">
+                            Count:<input type="number" name="count" value="<?php echo $product['count']?>">
                         </form>
+                        <?php
+                        } 
+                        ?>
                     </div>
                 <?php
             }
@@ -192,7 +208,8 @@
     function getCartFromCookie(){
         if(isset($_COOKIE['cart'])){
             $cookieData = json_decode($_COOKIE['cart']);
-            if($cookieData){
+            $try = (array) $cookieData;
+            if($try){
                 include_once("../staticInfo.php");
                 $idArr = array();
                 
@@ -204,11 +221,17 @@
                 $DBdata = $connection-> prepare($query);
 
                 $DBdata ->execute(array());
+                $DBdata->setFetchMode(PDO::FETCH_ASSOC);
                 $products = $DBdata -> fetchAll();
-
+                
                 foreach($cookieData as $id => $count){  
-                    $products[$id-1]['count'] = $count;
+                    foreach($products as $key => $value){
+                        if($value['productID'] == $id){
+                            $products[$key]['count'] = $count;
+                        }
+                    }
                 }
+
                 return $products;
             }else{
                 return null;

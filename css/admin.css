@@ -79,7 +79,7 @@ tr:nth-child(even) {
     border: 0px;
     border-radius: 10px;
     color: #E74C3C;
-} 
+}
 
 @media screen and (max-width: 600px) {
     .dash{
@@ -87,7 +87,7 @@ tr:nth-child(even) {
         height: auto;
         min-width: none;
     }
-    .sales{
+    .salesChart{
         width: 100%;
     }
     .table{
@@ -96,6 +96,7 @@ tr:nth-child(even) {
     }
 }
 @media screen and (min-width: 600px){
+    .salesChart{width: 60%;}
     .dash{position: fixed;}
     .workplace{margin-left: 20%;}
 }

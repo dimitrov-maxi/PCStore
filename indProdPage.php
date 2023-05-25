@@ -18,7 +18,7 @@ $getCategoryName = $connection->prepare('SELECT category_name FROM category wher
 
 $getCategoryName->execute([$categoryID]);
 $categoryName = $getCategoryName->fetch();
-$category = $categoryName['category_name']
+$category = $categoryName['category_name'];
 
 ?>
 
@@ -34,10 +34,6 @@ $category = $categoryName['category_name']
 <body class="theme">
     
     <!-------      ITEM PREVIEW           ---->
-
-
-    
-
 
     <div class="container">
         <div class="preview" >
@@ -69,13 +65,13 @@ $category = $categoryName['category_name']
                             echo '
                                 <div class="row">
                                     <h6 style="font-size: 30px;">
-                                        Family:'.$stats["series"].'
+                                        Family: '.$stats["series"].'
                                     </h6>
                                 </div>
 
                                 <div class="row">
                                     <h6 style="font-size: 30px;">
-                                        Core Count:'.$stats["core_count"].'
+                                        Core Count: '.$stats["core_count"].'
                                     </h6>
                                 </div>
 
@@ -104,39 +100,143 @@ $category = $categoryName['category_name']
                                 </div>';
                             break;
                         case 'GPU':
-                            echo ' ';
+                            $query2 = $connection->prepare('SELECT * FROM gpus WHERE productID = ?;');
+                            $query2->execute([$id]);
+                            $stats = $query2->fetch();
+                            echo '
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Base Frequency: '.$stats["base_clock"].' GHz
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Boost Frequency: '.$stats["boost_clock"].' GHz
+                                    </h6>
+                                </div>  
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Core Count: '.$stats["core_count"].'
+                                    </h6>
+                                </div>
+
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Series: '.$stats["series"].'
+                                    </h6>
+                                </div>
+
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Vendor: '.$stats["vendor"].'
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Vram: '.$stats["vram"].'GB '.$stats["vram_type"].'
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Connector: '.$stats["connector_type"].'
+                                    </h6><br><br><br>
+                                </div>';
                             break; 
-                        case 'GPU':
-                            echo ' ';
+                        case 'PSU':
+                            $query2 = $connection->prepare('SELECT * FROM psus as ps
+                            INNER JOIN powerratings as pr ON ps.PowerRatings_ratingID = pr.ratingID WHERE productID = ?;');
+                            $query2->execute([$id]);
+                            $stats = $query2->fetch();
+                            
+                            echo '
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Wattage: '.$stats["wattage"].'
+                                    </h6>
+                                </div>
+
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Type: '.$stats["type"].'
+                                    </h6>
+                                </div>
+
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Efficiency: '.$stats["rating_name"].'
+                                    </h6><br><br><br>
+                                </div>';
                             break;
-                        case 'GPU':
-                            echo ' ';
-                            break;                   
+                        case 'RAM':
+                            $query2 = $connection->prepare('SELECT * FROM ram WHERE productID = ?;');
+                            $query2->execute([$id]);
+                            $stats = $query2->fetch();
+                            echo '
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Frequency:'.$stats["frequency"].' MHz
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Latency: CL'.$stats["latency"].'
+                                    </h6>
+                                </div>  
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Type: '.$stats["type"].'
+                                    </h6>
+                                </div>';
+                            break;        
+                        case 'MOBO':
+                            $query2 = $connection->prepare('SELECT * FROM motherboards as m
+                            INNER JOIN products as p on m.productID = p.productID
+                            INNER JOIN sockets as s on s.socketID = m.socketID
+                            INNER JOIN chipsets as c on c.chipsetID = m.chipsetID
+                            WHERE p.productID = ?;');
+                            $query2->execute([$id]);
+                            $stats = $query2->fetch();
+                            echo '
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Socket: '.$stats["socket_name"].'
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Chipset: '.$stats["chipset_name"].'
+                                    </h6>
+                                </div>  
+                                <div class="row">
+                                    <h6 style="font-size: 30px;">
+                                        Memory type: '.$stats["supported_memory"].'
+                                    </h6>
+                                </div>';
+                            break;                              
                         } 
                         ?>
                         
-                        <div class="row" style="float: right; background-color: #E74C3C; margin-left:1px; border-radius: 15px ">
-
-                                <div class="h6" style="font-size: 50px;">
-                                    Price: <?= $itm['price']?> BGN
-                                    
-                                </div>
+                        <div class="row buyDiv">
+                            <div class="h6" style="font-size: 50px;">
+                                Price: <?= $itm['price']?> BGN
+                                
+                            </div>
+                            <?php
+                            if (isset($_SESSION['user'])){?>
+                                <form action="php/Cart/addToCart.php?id=<?php echo $id?>" method="post">
+                                    <div class="row">
+                                        <input class="col" type="number" name="count" value="1"><br>
+                                        <button class="col" type="submit">Add to cart</button>
+                                    </div>
+                                </form>
                                 <?php
-                                if (isset($_SESSION['user'])){?>
-                                    <form action="php/Cart/addToCart.php?id=<?php echo $id?>" method="post">
-                                        <div class="row">
-                                            <input class="col" type="number" name="count" value="1"><br>
-                                            <button class="col" type="submit">Add to cart</button>
-                                        </div>
-                                    </form>
-                                    <?php
-                                }else{
-                                ?>
-                                <button onclick="addToCart(<?php echo $id?>, wantedQty)">Add to cart</button>
-                                <input onchange="getNewQty()" id="qty<?php echo $id?>" type="number" value=1 >
-                                <?php
-                                }
-                                ?>
+                            }else{
+                            ?>
+                            <button onclick="addToCart(<?php echo $id?>, wantedQty)">Add to cart</button>
+                            <input onchange="getNewQty()" id="qty<?php echo $id?>" type="number" value=1 >
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div> 

@@ -245,3 +245,7 @@ CREATE TABLE IF NOT EXISTS `storage` (
     REFERENCES `products` (`productID`)
     ON DELETE CASCADE)
 ENGINE = InnoDB;
+
+ALTER TABLE `pcstoreproject`.`products` 
+CHANGE COLUMN `img_src` `img_src` VARCHAR(255) NOT NULL DEFAULT 'Pictures\\Products\\default\\default.jpg' ;
+

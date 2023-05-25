@@ -56,7 +56,8 @@
                                 </select>
                             <?php
                         }
-                        ?>  
+                        ?>
+                        Picture: <input type="file" name="picture" id="picture">
                         <input type="submit" value="Save changes">
                     </form>
                 <?php
@@ -89,11 +90,12 @@
                             <?php
                         }
                         ?>  
+                        Picture: <input type="file" name="picture" id="picture">
                         <input type="submit" value="Save changes">
                     </form>
                 <?php
                 break;
-                case 'PSU':
+            case 'PSU':
                     ?>
                         <form class="form" method="post" action="edit/editPSU.php?id=<?php echo $productID;?>" enctype="multipart/form-data">
                             <?php 
@@ -135,16 +137,107 @@
                                 <?php
                             }
                             ?>  
+                            Picture: <input type="file" name="picture" id="picture">
                             <input type="submit" value="Save changes">
                         </form>
                     <?php
-                    break;
-            case 'RAM':
                 break;
+            case 'RAM':
+                ?>
+                    <form class="form" method="post" action="edit/editRAM.php?id=<?php echo $productID;?>" enctype="multipart/form-data">
+                        <?php 
+                        $query = 'SELECT * FROM RAM as r
+                        INNER JOIN products as p on r.productID = p.productID
+                        WHERE r.productID = ?;';
+                        $data = $connection -> prepare($query);
+                        $data -> execute(array($productID));
+                        $result = $data -> fetchAll();
 
-                
+                        foreach ($result as $row) {?>
+                            Name: <input class="element" type='text' name='name' value='<?php echo $row['name'];?>'><br>
+                            Price: <input class="element" type='number' name='price' value='<?php echo $row['price'];?>'><br>
+                            Quantity<input class="element" type='number' name='quantity' value='<?php echo $row['quantity'];?>'><br>
+                            Model: <input class="element" type='text' name='model' value='<?php echo $row['model'];?>'><br>
+                            Manufacturer: <input class="element" type='text' name='manufacturer' value='<?php echo $row['manufacturer'];?>'><br>
+                            Frequency (MHz): <input class="element" type='number' step="any" name='frequency' value='<?php echo $row['frequency'];?>'><br>
+                            Latency (CL): <input class="element" type='number' step="any" name='latency' value='<?php echo $row['latency'];?>'><br>
+                            type: <select class="element" name="type">
+                                <option <?php if($row['type'] === "DDR3") echo 'selected'; ?> value="DDR3">DDR3</option>
+                                <option <?php if($row['type'] === "DDR4") echo 'selected'; ?> value="DDR4">DDR4</option>
+                                <option <?php if($row['type'] === "DDR5") echo 'selected'; ?> value="DDR5">DDR5</option>
+                            </select>
+                            <?php
+                        }
+                        ?>  
+                        Picture: <input type="file" name="picture" id="picture">
+                        <input type="submit" value="Save changes">
+                    </form>
+                    <?php
+                break;
+            case 'MOBO':
+                ?>
+                    <form class="form" method="post" action="edit/editMOBO.php?id=<?php echo $productID;?>" enctype="multipart/form-data">
+                        <?php 
+                        $query = 'SELECT * FROM motherboards as m
+                                  INNER JOIN products as p on m.productID = p.productID
+                                  INNER JOIN sockets as s on s.socketID = m.socketID
+                                  INNER JOIN chipsets as c on c.chipsetID = m.chipsetID
+                                  WHERE p.productID = ?;';
+                        $data = $connection -> prepare($query);
+                        $data -> execute(array($productID));
+                        $result = $data -> fetchAll();
+                        $query2 = 'SELECT * FROM sockets';
+                        $query3 = 'SELECT * FROM chipsets';
+                        $tmp = $connection -> query($query2);
+                        $result2 = $tmp -> fetchAll();
+                        $tmp2 = $connection -> query($query3);
+                        $result3 = $tmp2 -> fetchAll();
+                        foreach ($result as $row) {?>
+                            Name: <input class="element" type='text' name='name' value='<?php echo $row['name'];?>'><br>
+                            Price: <input class="element" type='number' name='price' value='<?php echo $row['price'];?>'><br>
+                            Quantity<input class="element" type='number' name='quantity' value='<?php echo $row['quantity'];?>'><br>
+                            Model: <input class="element" type='text' name='model' value='<?php echo $row['model'];?>'><br>
+                            Manufacturer: <input class="element" type='text' name='manufacturer' value='<?php echo $row['manufacturer'];?>'><br>
+                            Socket:<select class="element" name="socketID">
+                                <?php
+                                foreach($result2 as $sockets){?>
+                                    <option 
+                                        <?php 
+                                        if($row['socketID'] === $sockets['socketID'])
+                                            { echo 'selected';}
+                                            ?>
+                                        value="<?php echo $sockets['socketID'];?>"><?php echo $sockets['socket_name'];?></option>
+                                <?php
+                                }
+                                ?>
+                            </select><br>
+                            Chipset:<select class="element" name="chipsetID">
+                                <?php
+                                foreach($result3 as $chipsets){?>
+                                    <option 
+                                        <?php 
+                                        if($row['chipsetID'] === $chipsets['chipsetID'])
+                                            { echo 'selected';}
+                                            ?>
+                                        value="<?php echo $chipsets['chipsetID'];?>"><?php echo $chipsets['chipset_name'];?></option>
+                                <?php
+                                }
+                                ?>
+                            </select><br>
+                            Memory type: <select class="element" name="type">
+                                <option <?php if($row['supported_memory'] === "DDR3") echo 'selected'; ?> value="DDR3">DDR3</option>
+                                <option <?php if($row['supported_memory'] === "DDR4") echo 'selected'; ?> value="DDR4">DDR4</option>
+                                <option <?php if($row['supported_memory'] === "DDR5") echo 'selected'; ?> value="DDR5">DDR5</option>
+                            </select>
+                            <?php
+                        }
+                        ?>  
+                        Picture: <input type="file" name="picture" id="picture">
+                        <input type="submit" value="Save changes">
+                    </form>
+                <?php
+            break;  
         }
-
     ?>
     
 </body>

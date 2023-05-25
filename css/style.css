@@ -307,10 +307,19 @@ html, .theme{
 .cartContent{
     background-color: #E74C3C;
     position: absolute;
+    z-index: 2;
     border-radius: 10px;
+}
+.buyDiv{
+    bottom: 10px;
+    background-color: #E74C3C; 
+    border-radius: 15px;
 }
 
 @media screen and (max-width: 450px) {
+    .prodInfo{
+        margin-left: 15px;
+    }
     .hideMobile{
         display: none;
     }
@@ -335,6 +344,10 @@ html, .theme{
     }
 }
 @media screen and (min-width: 450px){
+    .prodInfo{
+        margin-top: 10px;
+        margin-right: 10px;
+    }
     .hideDesktop{
         display: none;
     }

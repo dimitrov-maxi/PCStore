@@ -21,11 +21,20 @@ INSERT INTO `category` (`categoryID`, `category_name`) VALUES ('1', 'CPU'), ('2'
 -- SOCKET FILL
 -----------------
 INSERT INTO `sockets` (`socketID`, `socket_name`) VALUES ('1', 'LGA 1700');
+INSERT INTO `sockets` (`socketID`, `socket_name`) VALUES ('2', 'AM5');
+
+
+-----------------
+-- CHIPSET FILL
+-----------------
+INSERT INTO `chipsets` (`chipsetID`, `chipset_name`) VALUES ('1', 'Z690');
+
+
 
 ---------------------
 -- POWER RATINGS FILL
 ---------------------
-INSERT INTO `powerratings` (`ratingID`, `rating_name`) VALUES ('1', '80+'), ('2', '80+ Bronze'), ('3', '80+ Silver'), ('4', '80+ Gold'), ('5', '80+ Platinum');
+INSERT INTO `powerratings` (`ratingID`, `rating_name`) VALUES ('1', '80+'), ('2', '80+ Bronze'), ('3', '80+ Silver'), ('4', '80+ Gold'), ('5', '80+ Platinum'), ('6', 'None') ;
 
 --------------------
 -- PRODUCT INSERTION
@@ -41,3 +50,6 @@ INSERT INTO `psus` (`productID`, `PowerRatings_ratingID`, `wattage`, `type`) VAL
 
 INSERT INTO `products` (`productID`, `categoryID`, `name`, `price`, `quantity`, `manufacturer`, `img_src`, `model`) VALUES ('4', '4', 'TEAM FORCE DELTA 3200Mhz 8GB', '85', '32', 'TEAM FORCE', 'Pictures\\Products\\RAM\\TeamGroup-TeamForce_Delta_3200_8GB.jpg', 'TEAM GROUP DELTA');
 INSERT INTO `ram` (`productID`, `frequency`, `latency`, `type`) VALUES ('4', '3200', '16', 'DDR4');
+
+INSERT INTO `products` (`productID`, `categoryID`, `name`, `price`, `quantity`, `manufacturer`, `img_src`, `model`) VALUES ('5', '3', 'GIGABYTE UD Z690 DDR4', '450', '7', 'GIGABYTE', 'Pictures\\Products\\MOBO\\3.jpg', 'UD Z690');
+INSERT INTO `motherboards` (`productID`, `socketID`, `chipsetID`, `supported_memory`) VALUES ('5', '1', '1', 'DDR4');

@@ -59,7 +59,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
                     <button onclick="viewProducts()" class="dashBtn"> View Products</button>
                     <button onclick="addProductsMenu()" class="dashBtn"> Add Products</button>
                     <button onclick="showSales()" class="dashBtn">Sales</button>
-                    <button onclick="window.location.href = '#addAdmin'" class="dashBtn"> Add Admin</button>
+                    <button onclick="window.location.href = '#addAdmin'" class="dashBtn"> Users</button>
                     <button onclick="window.location.href = '#settings'" class="dashBtn"> Settings</button>  
                 </div>
             </div>
@@ -72,7 +72,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
             <h2 style="float:right">Hi <?php echo $user -> getUsername();?></h2>
         
     <div id="products">
-        <table>
+        <table style="width:100%">
             <tr>
                 <th>Products</th>
             </tr>
@@ -100,9 +100,9 @@ $orders = $connections -> query('SELECT * FROM orders;');
                         <td class = "col"><?= $row['manufacturer']?></td>
                         <td class = "col"><?= $row['model']?></td>
                         <td class = "col"><img src="../<?= $row['img_src']?>" style="width: 200px"></td>
-                        <td class = "col"><a href="managment/edit.php?id=<?= $row['productID']?>&category=<?= $row['category_name']?>">Edit</a></td>
-                        <td class = "col"><a href="managment/delete.php?id=<?= $row['productID']?>">Delete</a></td>
-                    </tr><br>
+                        <td class = "col"><a href="management/edit.php?id=<?= $row['productID']?>&category=<?= $row['category_name']?>">Edit</a></td>
+                        <td class = "col"><a href="management/delete.php?id=<?= $row['productID']?>">Delete</a></td>
+                    </tr>
                     <?php
                 }
                 ?>
@@ -110,53 +110,68 @@ $orders = $connections -> query('SELECT * FROM orders;');
     </div>
     <div class="addProductsMenu" id="addProductsMenu">
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=CPU">
                 <img class="addProductPic" src="../Pictures/Admin/CPU.png" alt="">
                 <button class="addProductButton">ADD NEW CPU</button>
             </a>
         </div>       
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=MOBO">
                 <img class="addProductPic" src="../Pictures/Admin/MOBO.png" alt="">
                 <button class="addProductButton">ADD NEW MOBO</button>
             </a>
         </div>     
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=RAM">
                 <img class="addProductPic" src="../Pictures/Admin/RAM.png" alt="">
                 <button class="addProductButton">ADD NEW RAM</button>
             </a>
         </div>
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=PSU">
                 <img class="addProductPic" src="../Pictures/Admin/PSU.png" alt="">
                 <button class="addProductButton">ADD NEW PSU</button>
             </a>
         </div>        
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=GPU">
                 <img class="addProductPic" src="../Pictures/Admin/GPU.png" alt="">
                 <button class="addProductButton">ADD NEW GPU</button>
             </a>
         </div>
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=Storage">
                 <img class="addProductPic" src="../Pictures/Admin/Storage.png" alt="">
                 <button class="addProductButton">ADD NEW Storage</button>
             </a>
         </div>
         <div class="addProducts">
-            <a href="product managment/addCPU.php">
+            <a href="management/add.php?category=Cooling">
                 <img class="addProductPic" src="../Pictures/Admin/Cooling.png" alt="">
                 <button class="addProductButton">ADD NEW Cooling</button>
+            </a>
+        </div>
+        <div class="addProducts">
+            <a href="management/add.php?category=Socket">
+                <img class="addProductPic" src="../Pictures/Admin/MOBO.png" alt="">
+                <button class="addProductButton">ADD NEW SOCKET</button>
+            </a>
+        </div>
+        <div class="addProducts">
+            <a href="management/add.php?category=Chipset">
+                <img class="addProductPic" src="../Pictures/Admin/MOBO.png" alt="">
+                <button class="addProductButton">ADD NEW CHIPSET</button>
             </a>
         </div>
     </div>
 
     <div id="viewSales" class="sales">
-        <canvas id="salesChart" style="width: auto; max-width: 600px"></canvas>
-
-        <table>
+        <div class="salesChart">
+            <canvas id="salesChart" style="width: auto; width: 600px"></canvas>
+        </div>
+       
+        
+        <table style="width: 100%">
             <tr>
                 <th>Orders</th>
             </tr>
@@ -182,7 +197,7 @@ $orders = $connections -> query('SELECT * FROM orders;');
                         <td class = "col"><?= $row2['totalPrice']?></td>
                         <td class = "col"><?= $row2['status']?></td>
                         <td class = "col"><a href="orderManagment/viewOrder.php?orderID=<?= $row2['orderID']?>">View</a></td>
-                    </tr><br>
+                    </tr>
                     <?php
                 }
                 ?>
@@ -203,52 +218,36 @@ $data = array();
 // Loop through the results and output the data
 while($row = mysqli_fetch_assoc($result)) {
     $data[strval($row['date'])] = $row['total_sales'];
-}
-
-?>
-
-
+}?>
     <script>
         let days = [];
         let weekSales = [];
         <?php 
         foreach($data as $date => $sale){
-            ?>days.push(<?php echo $date;?>)
+            ?>days.push(new Date(<?php echo strtotime($date)*1000;?>).toLocaleDateString('bg'))
             weekSales.push(<?php echo $sale;?>)
         <?php
         }
         ?>
         console.log(days);
-        let weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        let today = new Date();
-        let lastSevenDays = []; 
-            
-        for (let i = 6; i >= 0; i--) { 
-            let date = new Date(); 
-            date.setDate(today.getDate() - i); 
-            let weekday = weekdays[date.getDay()]; 
-            lastSevenDays.push(weekday); 
-        }
 
-        
-        // let weekSales = [200, 350, 500, 100, 125, 250, 10];
         let colors = [];
         for (i in weekSales) {
-            if(weekSales[i] >= 5000){
+            if(weekSales[i] >= 1000){
                 colors.push("green");
             }
-            else if(weekSales[i] < 5000 && weekSales[i] > 1000){
+            else if(weekSales[i] < 1000 && weekSales[i] > 500){
                 colors.push("orange");
             }
-            else if(weekSales[i] < 1000){
+            else if(weekSales[i] < 500){
                 colors.push("red");
             }
         }
-        
+        window.onload  = function() {
         new Chart("salesChart", {
             type: "bar",
             data: {
-                labels: lastSevenDays,
+                labels: days,
                 datasets: [{
                 backgroundColor: colors,
                 data: weekSales
@@ -262,6 +261,7 @@ while($row = mysqli_fetch_assoc($result)) {
                 }
             }
         });
+    }
 
     </script>
 <!-- ----------------------------------- -->
@@ -284,6 +284,7 @@ while($row = mysqli_fetch_assoc($result)) {
         function showSales() {
             hideAll();
             document.getElementById("viewSales").style.display = "block";
+            document.getElementById("salesChart").style.display = "block";
         }
         function addAdminPage() {
             hideAll();
@@ -292,8 +293,10 @@ while($row = mysqli_fetch_assoc($result)) {
         function settingsPage(){
             hideAll();
         }
+    </script>
+    <?php
         function logout(){
             unset($_SESSION['user']);
         }
-    </script>
+    ?>
 </body>
